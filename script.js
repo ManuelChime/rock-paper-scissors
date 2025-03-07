@@ -1,5 +1,12 @@
 let humanScore = 0;
 let computerScore = 0;
+let draw = 0;
+const humanScoreScreen = document.querySelector("#player");
+const computerScoreScreen = document.querySelector("#computer");
+const drawScreen = document.querySelector("#draw");
+const content = document.createElement("p");
+content.classList.add("content");
+
 
 function getComputerChoice() {
     const choice1 = "rock";
@@ -16,64 +23,102 @@ function getComputerChoice() {
     }
 }
 
-function getHumanChoice() {
-    let humanChoice = prompt("Please enter your choice: ");
-    humanChoice = humanChoice.toLowerCase();
-    console.log(humanChoice);
-
-    return humanChoice;
-}
-
 function playRound(humanChoice, computerChoice) {
-    humanChoice = humanChoice.toLowerCase();
-    computerChoice = computerChoice.toLowerCase();
+    humanChoice.toLowerCase();
+    computerChoice.toLowerCase();
     
     if (humanChoice === computerChoice) {
-        alert("It's a tie!");
+        draw++;
+       drawScreen.textContent = draw;
+       content.textContent = `It's a tie! You both chose ${humanChoice}!`;
+       content.setAttribute("style", "color: #97a102ea; ");
+       document.body.appendChild(content);
     }
     else if (humanChoice === "rock") {  
         if (computerChoice === "scissors") {
-            alert("You win! Rock beats Scissors");
+            content.setAttribute("style", "color: #01ac18ea ; ");
+            content.textContent = "You win! Rock beats Scissors!";
+            document.body.appendChild(content);
             humanScore++;
         } else {
-            alert("You lose! Paper beats Rock");
+            content.setAttribute("style", "color:rgba(190, 25, 3, 0.92); ");
+            content.textContent = "You lose! Paper beats Rock!";
+            document.body.appendChild(content);
             computerScore++;
         }
     }
     else if (humanChoice === "paper") {
         if (computerChoice === "rock") {
-            alert("You win! Paper beats Rock");
+            content.setAttribute("style", "color: #01ac18ea ; ");
+            content.textContent = "You win! Paper beats rock!";
+            document.body.appendChild(content);
             humanScore++;
         } else {
-            alert("You lose! Scissors beats Paper");
+            content.setAttribute("style", "color:rgba(190, 25, 3, 0.92); ");
+            content.textContent = "You lose! Scissors beats Paper!";
+            document.body.appendChild(content);
             computerScore++;
         }
     }
     else if (humanChoice === "scissors") {
         if (computerChoice === "paper") {
-            alert("You win! Scissors beats Paper");
+            content.setAttribute("style", "color: #01ac18ea ; ");
+            content.textContent = "You Win! Scissors beats Paper!";
+            document.body.appendChild(content);
             humanScore++;
         } else {
-            alert("You lose! Rock beats Scissors");
+            content.setAttribute("style", "color:rgba(190, 25, 3, 0.92); ");
+            content.textContent = "You Lose! Rock beats Scissors!";
+            document.body.appendChild(content);
             computerScore++;
         }
     }
     else {
-        alert("Invalid choice. Please try again.");
-        
+        content.textContent = "Invalid input. Please try again.";
+        document.body.appendChild(content);        
     }
 }
+const btnRock = document.querySelector("#rock");
+btnRock.addEventListener("click", () => {
+    playRound("rock", getComputerChoice());
+    humanScoreScreen.textContent = humanScore;
+    computerScoreScreen.textContent = computerScore;
+    checkWin();
+});
+const btnPaper = document.querySelector("#paper");
+btnPaper.addEventListener("click", () => {
+    playRound("paper", getComputerChoice());
+    humanScoreScreen.textContent = humanScore;
+    computerScoreScreen.textContent = computerScore;
+    checkWin();
+});
+const btnScissors = document.querySelector("#scissors");
+btnScissors.addEventListener("click", () => {
+    playRound("scissors", getComputerChoice());
+    humanScoreScreen.textContent = humanScore;
+    computerScoreScreen.textContent = computerScore;
+    checkWin();
+});
 
-function playGame() {
+function checkWin() {
 
-    for (let i = 0; i < 5; i++) {
-        playRound(getHumanChoice(), getComputerChoice());
-    }
-    if (humanScore > computerScore) {
-        alert("You win!" + " Human Score: " + humanScore+ " Computer Score: " + computerScore);
-    }
-    else {
-        alert("You lose!"  + " Human Score: " + humanScore+ " Computer Score: " + computerScore);
+    if(humanScore >= 5 || computerScore >= 5) {
+
+        if (humanScore > computerScore) {
+            content.setAttribute("style","color: #01ac18ea; font-size: 2.5em;")
+            content.textContent = "You win the game!";
+            document.body.appendChild(content);
+        }
+        else {
+            content.setAttribute("style","color: rgba(190, 25, 3, 0.92);; font-size: 2.5em;")
+            content.textContent = "You lose the game!";
+            document.body.appendChild(content);
+        }
+        humanScore = 0;
+        computerScore = 0;
+        draw = 0;
+        humanScoreScreen.textContent = humanScore;
+        computerScoreScreen.textContent = computerScore;
+        drawScreen.textContent = draw
     }
 }
-playGame();
